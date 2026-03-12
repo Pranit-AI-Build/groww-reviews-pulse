@@ -25,10 +25,14 @@ jobs:
       with:
         python-version: '3.11'
         
+    - name: Clear pip cache
+      run: pip cache purge || true
+      
     - name: Install dependencies
       run: |
         pip install --upgrade pip
-        pip install --no-cache-dir -r requirements.txt
+        pip install structlog>=23.0.0
+        pip install -r requirements.txt
         
     - name: Run Weekly Pulse Pipeline
       env:
