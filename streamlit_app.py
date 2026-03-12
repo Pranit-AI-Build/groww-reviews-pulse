@@ -1,4 +1,4 @@
-"""Streamlit Dashboard - Clean Card Layout."""
+"""Streamlit Dashboard - Card Sections with Headers Inside."""
 
 import streamlit as st
 import json
@@ -40,97 +40,93 @@ st.markdown("<p style='color:#64748b; font-size:0.875rem; margin:0 0 2rem 0;'>An
 left, right = st.columns([2, 1])
 
 with left:
-    # Top 3 Themes Card
+    # Top 3 Themes Card - Title inside card
     themes = report.get('themes', [])[:3]
     cats = ['HIGH IMPACT', 'USABILITY', 'ONBOARDING']
     
-    with st.container():
-        st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>" +
-                   "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
-                   "<span style='font-size:1.1rem;'>🔥</span> Top 3 Themes</div>", unsafe_allow_html=True)
-        
-        tcols = st.columns(3)
-        for i, (theme, col) in enumerate(zip(themes, tcols)):
-            with col:
-                st.markdown(f"<div style='font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#64748b; margin-bottom:0.5rem;'>{cats[i]}</div>", unsafe_allow_html=True)
-                st.markdown(f"<div style='font-weight:600; color:#0f172a; margin-bottom:0.5rem; font-size:0.95rem;'>{theme['name']}</div>", unsafe_allow_html=True)
-                st.markdown(f"<div style='font-size:0.8rem; color:#64748b; line-height:1.5;'>{theme['description']}</div>", unsafe_allow_html=True)
-        
-        st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>" +
+               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem; font-size:1.1rem;'>" +
+               "<span>🔥</span> Top 3 Themes</div>", unsafe_allow_html=True)
     
-    # Representative User Quotes Card
+    tcols = st.columns(3)
+    for i, (theme, col) in enumerate(zip(themes, tcols)):
+        with col:
+            st.markdown(f"<div style='font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#64748b; margin-bottom:0.5rem;'>{cats[i]}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='font-weight:600; color:#0f172a; margin-bottom:0.5rem; font-size:0.95rem;'>{theme['name']}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='font-size:0.8rem; color:#64748b; line-height:1.5;'>{theme['description']}</div>", unsafe_allow_html=True)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # Representative User Quotes Card - Title inside card
     quotes = report.get('quotes', [])[:3]
     
-    with st.container():
-        st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>" +
-                   "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
-                   "<span style='font-size:1.1rem;'>💬</span> Representative User Quotes</div>", unsafe_allow_html=True)
-        
-        for i, quote in enumerate(quotes):
-            border = "1px solid #f1f5f9" if i < 2 else "none"
-            st.markdown(f"""
-            <div style="padding:1rem 0; border-bottom:{border};">
-                <div style="color:#374151; font-size:0.9rem; line-height:1.6; margin-bottom:0.5rem;">"{quote['text']}"</div>
-                <div style="font-size:0.75rem; color:#9ca3af;">— Verified User, {quote.get('rating', 1)} Star Review</div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>" +
+               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem; font-size:1.1rem;'>" +
+               "<span>💬</span> Representative User Quotes</div>", unsafe_allow_html=True)
     
-    # Suggested Action Ideas Card
+    for i, quote in enumerate(quotes):
+        border = "1px solid #f1f5f9" if i < 2 else "none"
+        st.markdown(f"""
+        <div style="padding:1rem 0; border-bottom:{border};">
+            <div style="color:#374151; font-size:0.9rem; line-height:1.6; margin-bottom:0.5rem;">"{quote['text']}"</div>
+            <div style="font-size:0.75rem; color:#9ca3af;">— Verified User, {quote.get('rating', 1)} Star Review</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # Suggested Action Ideas Card - Title inside card
     actions = report.get('actions', [])[:3]
     
-    with st.container():
-        st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem;'>" +
-                   "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
-                   "<span style='font-size:1.1rem;'>💡</span> Suggested Action Ideas</div>", unsafe_allow_html=True)
-        
-        for i, action in enumerate(actions):
-            border = "1px solid #f1f5f9" if i < 2 else "none"
-            st.markdown(f"""
-            <div style="display:flex; gap:1rem; padding:1rem 0; border-bottom:{border};">
-                <div style="width:28px; height:28px; background:#eff6ff; color:#4f46e5; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.85rem; flex-shrink:0;">{i+1}</div>
-                <div style="flex:1;">
-                    <div style="font-weight:600; color:#0f172a; font-size:0.9rem; margin-bottom:0.25rem;">{action['title']}</div>
-                    <div style="font-size:0.8rem; color:#64748b; line-height:1.5;">{action['description']}</div>
-                </div>
+    st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem;'>" +
+               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem; font-size:1.1rem;'>" +
+               "<span>💡</span> Suggested Action Ideas</div>", unsafe_allow_html=True)
+    
+    for i, action in enumerate(actions):
+        border = "1px solid #f1f5f9" if i < 2 else "none"
+        st.markdown(f"""
+        <div style="display:flex; gap:1rem; padding:1rem 0; border-bottom:{border};">
+            <div style="width:28px; height:28px; background:#eff6ff; color:#4f46e5; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.85rem; flex-shrink:0;">{i+1}</div>
+            <div style="flex:1;">
+                <div style="font-weight:600; color:#0f172a; font-size:0.9rem; margin-bottom:0.25rem;">{action['title']}</div>
+                <div style="font-size:0.8rem; color:#64748b; line-height:1.5;">{action['description']}</div>
             </div>
-            """, unsafe_allow_html=True)
-        
-        st.markdown("</div>", unsafe_allow_html=True)
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
 
 with right:
-    # Send Report Card
-    with st.container():
-        st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem;'>" +
-                   "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
-                   "<span>📧</span> Send Report</div>", unsafe_allow_html=True)
+    # Send Report Card - Title inside card
+    st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem;'>" +
+               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem; font-size:1.1rem;'>" +
+               "<span>📧</span> Send Report</div>", unsafe_allow_html=True)
+    
+    with st.form("email"):
+        st.text_input("Recipient Email", placeholder="product-team@company.com")
+        st.text_input("Subject", value="Weekly Insight Summary - Negative Reviews")
         
-        with st.form("email"):
-            st.text_input("Recipient Email", placeholder="product-team@company.com")
-            st.text_input("Subject", value="Weekly Insight Summary - Negative Reviews")
-            
-            # Generate key themes list from actual data
-            themes_list = "".join([f"<li>{t['name']}</li>" for t in themes])
-            
-            st.markdown(f"""
-            <div style="background:#f8fafc; border-radius:8px; padding:1rem; margin:1rem 0; font-size:0.8rem; color:#64748b;">
-                <div style="font-weight:600; color:#0f172a; margin-bottom:0.75rem;">Preview Summary</div>
-                <div><strong>SUMMARY OVERVIEW</strong><br>
-                This week, we analyzed {report.get('total_reviews_analyzed', 667)} negative reviews. The most critical themes relate to stability and performance.<br><br>
-                <strong>KEY THEMES:</strong>
-                <ul style="margin:0.5rem 0; padding-left:1rem;">
-                    {themes_list}
-                </ul>
-                </div>
+        # Generate key themes list from actual data
+        themes_list = "".join([f"<li>{t['name']}</li>" for t in themes])
+        
+        st.markdown(f"""
+        <div style="background:#f8fafc; border-radius:8px; padding:1rem; margin:1rem 0; font-size:0.8rem; color:#64748b;">
+            <div style="font-weight:600; color:#0f172a; margin-bottom:0.75rem;">Preview Summary</div>
+            <div><strong>SUMMARY OVERVIEW</strong><br>
+            This week, we analyzed {report.get('total_reviews_analyzed', 667)} negative reviews. The most critical themes relate to stability and performance.<br><br>
+            <strong>KEY THEMES:</strong>
+            <ul style="margin:0.5rem 0; padding-left:1rem;">
+                {themes_list}
+            </ul>
             </div>
-            """, unsafe_allow_html=True)
-            
-            if st.form_submit_button("📧 Send Email", use_container_width=True, type="primary"):
-                st.success("✅ Email sent!")
+        </div>
+        """, unsafe_allow_html=True)
         
-        st.markdown("<div style='font-size:0.7rem; color:#9ca3af; text-align:center; margin-top:1rem;'>This report will be sent as a PDF attachment with a formatted HTML body.</div>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+        if st.form_submit_button("📧 Send Email", use_container_width=True, type="primary"):
+            st.success("✅ Email sent!")
+    
+    st.markdown("<div style='font-size:0.7rem; color:#9ca3af; text-align:center; margin-top:1rem;'>This report will be sent as a PDF attachment with a formatted HTML body.</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
 st.markdown("""
