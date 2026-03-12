@@ -4,7 +4,7 @@ import schedule
 import time
 import sys
 import os
-from datetime import datetime, timedelta
+import datetime
 from pathlib import Path
 
 # Add phase directories to path
@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).parent / "backend"))
 def run_pipeline():
     """Run the complete pipeline: Collect -> Process -> Analyze -> Email."""
     print(f"\n{'='*60}")
-    print(f"Starting Weekly Pulse Pipeline at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Starting Weekly Pulse Pipeline at {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*60}\n")
     
     try:
@@ -76,8 +76,8 @@ def run_pipeline():
         actions = action_generator.generate(themes, quotes)
         
         # Calculate date range for the report
-        end_date = datetime.now().strftime("%Y-%m-%d")
-        start_date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
+        end_date = datetime.datetime.now().strftime("%Y-%m-%d")
+        start_date = (datetime.datetime.now() - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
         
         report = report_generator.generate(
             themes=themes, 
@@ -103,14 +103,14 @@ def run_pipeline():
         # Send to configured email
         send_email_via_smtp(
             to_email=recipient,
-            subject=f"Weekly Pulse - Groww Reviews ({datetime.now().strftime('%Y-%m-%d')})",
+            subject=f"Weekly Pulse - Groww Reviews ({datetime.datetime.now().strftime('%Y-%m-%d')})",
             html_body=email_body,
             settings=settings
         )
         print(f"   ✓ Email sent to {recipient}")
         
         print(f"\n{'='*60}")
-        print(f"Pipeline completed successfully at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"Pipeline completed successfully at {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"{'='*60}\n")
         
     except Exception as e:
@@ -123,7 +123,7 @@ def main():
     print("\n" + "="*60)
     print("Groww Reviews Weekly Pulse Scheduler")
     print("="*60)
-    print(f"Current time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Current time: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("Running pipeline once...\n")
     
     # Run pipeline immediately (GitHub Actions handles the scheduling)
