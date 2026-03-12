@@ -59,24 +59,24 @@ with left_col:
     
     # Representative User Quotes Card
     quotes = report.get('quotes', [])[:3]
-    
+        
     st.markdown("""
     <div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>
         <div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#6366f1; margin-bottom:1.5rem;'>
             <span style='font-size:1.1rem;'>💬</span> Representative User Quotes
         </div>
+        <div style='background:#f9fafb; border-radius:8px; padding:1.5rem; border:1px solid #e5e7eb;'>
     """, unsafe_allow_html=True)
-    
+        
     for i, quote in enumerate(quotes):
-        border = "1px solid #f1f5f9" if i < 2 else "none"
         st.markdown(f"""
-        <div style="padding:1rem 0; border-bottom:{border};">
-            <div style="color:#374151; font-size:0.9rem; line-height:1.6; margin-bottom:0.5rem;">"{quote['text']}"</div>
+        <div style="padding-bottom:{'1.25rem' if i < len(quotes) - 1 else '0'}; margin-bottom:{'1.25rem' if i < len(quotes) - 1 else '0'}; border-bottom:{'1px solid #e5e7eb' if i < len(quotes) - 1 else 'none'};">
+            <div style="color:#374151; font-size:0.9rem; line-height:1.6; margin-bottom:0.5rem; font-style:italic;">\"{quote['text']}\"</div>
             <div style="font-size:0.75rem; color:#9ca3af;">— Verified User, {quote.get('rating', 1)} Star Review</div>
         </div>
         """, unsafe_allow_html=True)
-    
-    st.markdown("</div>", unsafe_allow_html=True)
+        
+    st.markdown("        </div></div>", unsafe_allow_html=True)
     
     # Suggested Action Ideas Card
     actions = report.get('actions', [])[:3]

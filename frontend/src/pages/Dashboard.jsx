@@ -96,15 +96,46 @@ function Dashboard() {
 
           {/* User Quotes & Actions */}
           <section style={{ backgroundColor: 'white', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
-              <span style={{ color: '#6366f1', fontSize: '1.25rem' }}>❝</span>
-              <h2 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1f2937' }}>Representative User Quotes</h2>
-            </div>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
-              {report?.quotes?.map((quote, i) => (
-                <QuoteCard key={i} quote={quote} index={i} />
-              ))}
+            {/* Quotes Section */}
+            <div style={{ marginBottom: '2rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                <span style={{ color: '#6366f1', fontSize: '1.25rem' }}>❝</span>
+                <h2 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1f2937' }}>Representative User Quotes</h2>
+              </div>
+              
+              {/* Single Box for All Quotes */}
+              <div style={{
+                backgroundColor: '#f9fafb',
+                borderRadius: '12px',
+                padding: '1.5rem',
+                border: '1px solid #e5e7eb'
+              }}>
+                {report?.quotes?.map((quote, i) => (
+                  <div key={i} style={{
+                    paddingBottom: i < report.quotes.length - 1 ? '1.25rem' : '0',
+                    marginBottom: i < report.quotes.length - 1 ? '1.25rem' : '0',
+                    borderBottom: i < report.quotes.length - 1 ? '1px solid #e5e7eb' : 'none'
+                  }}>
+                    <p style={{ 
+                      fontSize: '0.9375rem', 
+                      color: '#374151', 
+                      lineHeight: '1.6', 
+                      marginBottom: '0.5rem',
+                      fontStyle: 'italic',
+                      margin: '0 0 0.5rem 0'
+                    }}>
+                      "{quote.text}"
+                    </p>
+                    <p style={{ 
+                      fontSize: '0.75rem', 
+                      color: '#9ca3af',
+                      margin: 0
+                    }}>
+                      — Verified User, {quote.rating || 1} Star Review
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
@@ -269,41 +300,7 @@ function ThemeCard({ theme, index }) {
   )
 }
 
-function QuoteCard({ quote, index }) {
-  return (
-    <div style={{
-      display: 'flex',
-      gap: '1rem',
-      padding: '1.25rem',
-      backgroundColor: '#f9fafb',
-      borderRadius: '12px',
-    }}>
-      <div style={{
-        width: '40px',
-        height: '40px',
-        borderRadius: '50%',
-        backgroundColor: ['#6366f1', '#8b5cf6', '#ec4899'][index],
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'white',
-        fontSize: '0.875rem',
-        fontWeight: '600',
-        flexShrink: 0,
-      }}>
-        {String.fromCharCode(65 + index)}
-      </div>
-      <div style={{ flex: 1 }}>
-        <p style={{ fontSize: '0.9375rem', color: '#374151', lineHeight: '1.6', marginBottom: '0.5rem', fontStyle: 'italic' }}>
-          "{quote.text}"
-        </p>
-        <p style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
-          — Verified User, 1-Star Review
-        </p>
-      </div>
-    </div>
-  )
-}
+
 
 function ActionCard({ action, index }) {
   return (
