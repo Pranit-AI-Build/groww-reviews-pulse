@@ -1,0 +1,71 @@
+{
+  "generated_at": "2026-03-11T02:32:08.951458",
+  "week_range": "2025-12-17 to 2026-03-09",
+  "total_reviews": 667,
+  "themes": [
+    {
+      "name": "App Performance",
+      "description": "Issues with the app's speed, glitches, and overall functionality, leading to a poor user experience.",
+      "review_count": 34,
+      "sentiment": "negative",
+      "severity": "high"
+    },
+    {
+      "name": "Brokerage Charges and Fees",
+      "description": "Complaints about high brokerage charges, hidden fees, and other expenses associated with using the app.",
+      "review_count": 23,
+      "sentiment": "negative",
+      "severity": "high"
+    },
+    {
+      "name": "Trading and Order Execution",
+      "description": "Problems with placing orders, executing trades, and managing investments, including issues with stop-loss and target prices.",
+      "review_count": 20,
+      "sentiment": "negative",
+      "severity": "high"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "exit all not working!!!! loss money sometimes",
+      "theme": "App Performance",
+      "context": "Illustrates a specific issue with the app's functionality, resulting in financial losses"
+    },
+    {
+      "text": "fetching external funds is not working now..",
+      "theme": "App Performance",
+      "context": "Highlights a particular feature that is currently not functioning"
+    },
+    {
+      "text": "Broker Charges Are High",
+      "theme": "Brokerage Charges and Fees",
+      "context": "Illustrates high brokerage charges"
+    }
+  ],
+  "actions": [
+    {
+      "title": "Optimize App Performance",
+      "description": "Conduct a thorough review of the app's code and infrastructure to identify and fix performance bottlenecks, ensuring a seamless user experience and preventing financial losses due to glitches. This should include resolving issues with 'exit all' functionality and external funds fetching. By doing so, we can significantly improve user satisfaction and retention.",
+      "priority": "high",
+      "effort": "medium",
+      "impact": "high",
+      "related_theme": "App Performance"
+    },
+    {
+      "title": "Review Brokerage Charges",
+      "description": "Assess the app's brokerage charges and fees to determine if they are competitive and transparent. Consider revising the fee structure to better align with user expectations and industry standards, ensuring that users feel they are getting a fair deal. This could involve introducing tiered pricing or promotional offers to incentivize user engagement.",
+      "priority": "medium",
+      "effort": "small",
+      "impact": "medium",
+      "related_theme": "Brokerage Charges and Fees"
+    },
+    {
+      "title": "Enhance User Interface",
+      "description": "Redesign the app's user interface to improve navigation, clarity, and overall usability. This should include simplifying the order execution process, making stop-loss and target prices more intuitive, and providing clear and concise information to users. By streamlining the UI, we can reduce user frustration and increase the app's overall appeal.",
+      "priority": "medium",
+      "effort": "large",
+      "impact": "high",
+      "related_theme": "User Interface and Experience"
+    }
+  ]
+}

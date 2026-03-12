@@ -1,0 +1,49 @@
+# Weekly Pulse - Groww Reviews
+
+**Week:** 2025-12-17 to 2026-03-09
+**Reviews Analyzed:** 667
+
+---
+
+## Top 3 Themes
+
+1. **App Performance** - 34 mentions
+   - Issues with the app's speed, glitches, and overall functionality, leading to a poor user experience.
+   - Sentiment: negative | Severity: high
+
+2. **Brokerage Charges and Fees** - 23 mentions
+   - Complaints about high brokerage charges, hidden fees, and other expenses associated with using the app.
+   - Sentiment: negative | Severity: high
+
+3. **Trading and Order Execution** - 20 mentions
+   - Problems with placing orders, executing trades, and managing investments, including issues with stop-loss and target prices.
+   - Sentiment: negative | Severity: high
+
+## User Voices
+
+> "exit all not working!!!! loss money sometimes"
+> — *App Performance*
+
+> "fetching external funds is not working now.."
+> — *App Performance*
+
+> "Broker Charges Are High"
+> — *Brokerage Charges and Fees*
+
+## Suggested Actions
+
+1. **Optimize App Performance**
+   Conduct a thorough review of the app's code and infrastructure to identify and fix performance bottlenecks, ensuring a seamless user experience and preventing financial losses due to glitches. This should include resolving issues with 'exit all' functionality and external funds fetching. By doing so, we can significantly improve user satisfaction and retention.
+   Priority: high | Effort: medium | Impact: high
+
+2. **Review Brokerage Charges**
+   Assess the app's brokerage charges and fees to determine if they are competitive and transparent. Consider revising the fee structure to better align with user expectations and industry standards, ensuring that users feel they are getting a fair deal. This could involve introducing tiered pricing or promotional offers to incentivize user engagement.
+   Priority: medium | Effort: small | Impact: medium
+
+3. **Enhance User Interface**
+   Redesign the app's user interface to improve navigation, clarity, and overall usability. This should include simplifying the order execution process, making stop-loss and target prices more intuitive, and providing clear and concise information to users. By streamlining the UI, we can reduce user frustration and increase the app's overall appeal.
+   Priority: medium | Effort: large | Impact: high
+
+---
+
+*Generated on 2026-03-11*
