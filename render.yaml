@@ -2,11 +2,13 @@
 services:
   - type: web
     name: groww-reviews-dashboard
-    runtime: docker
+    runtime: python
     plan: standard
+    buildCommand: "pip install -r backend/requirements.txt && pip install schedule"
+    startCommand: "bash start.sh"
     envVars:
       - key: GROQ_API_KEY
-        sync: false  # Set in Render dashboard
+        sync: false
       - key: GROQ_MODEL
         value: llama-3.3-70b-versatile
       - key: SMTP_HOST
@@ -14,14 +16,14 @@ services:
       - key: SMTP_PORT
         value: 587
       - key: SMTP_USER
-        sync: false  # Set in Render dashboard
+        sync: false
       - key: SMTP_PASSWORD
-        sync: false  # Set in Render dashboard
+        sync: false
       - key: EMAIL_FROM
-        sync: false  # Set in Render dashboard
+        sync: false
       - key: PYTHONPATH
-        value: /app
+        value: /opt/render/project/src
     disk:
       name: data
-      mountPath: /app/data
+      mountPath: /opt/render/project/src/data
       sizeGB: 1
