@@ -34,9 +34,7 @@ def run_pipeline():
         
         # Step 2: Process reviews
         print("\n🔧 Step 2: Processing reviews...")
-        from phase2.src.processors.sanitizer import PIISanitizer
-        from phase2.src.processors.normalizer import TextNormalizer
-        from phase2.src.processors.filters import ReviewFilter
+        from phase2.src.processors import PIISanitizer, TextNormalizer, ReviewFilter
         
         sanitizer = PIISanitizer()
         normalizer = TextNormalizer()
