@@ -1,4 +1,4 @@
-"""Streamlit Dashboard - Clean Version."""
+"""Streamlit Dashboard - Clean Card Layout."""
 
 import streamlit as st
 import json
@@ -11,20 +11,11 @@ sys.path.insert(0, str(Path(__file__).parent / "phase3"))
 
 st.set_page_config(page_title="InsightReviewer", layout="wide", initial_sidebar_state="collapsed")
 
-# Simple clean CSS
 st.markdown("""
 <style>
     .main { background-color: #f8fafc; }
     #MainMenu, footer, header { visibility: hidden; }
-    
-    /* Nav */
-    .nav { background: white; padding: 1rem 2rem; border-bottom: 1px solid #e2e8f0; margin: -4rem -4rem 2rem -4rem; }
-    
-    /* Cards */
-    .stCard { background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 1.5rem; }
-    
-    /* Button */
-    .stButton button { background: #4f46e5 !important; color: white !important; border-radius: 8px !important; }
+    .block-container { padding: 2rem !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -41,44 +32,22 @@ if not report:
     st.error("No data found")
     st.stop()
 
-# Navigation
-st.markdown("""
-<div style="background:white; padding:1rem 2rem; border-bottom:1px solid #e2e8f0; margin:-4rem -4rem 2rem -4rem; display:flex; align-items:center; gap:3rem;">
-    <div style="display:flex; align-items:center; gap:0.5rem; font-weight:700; color:#4f46e5; font-size:1.1rem;">
-        <div style="width:32px; height:32px; background:#4f46e5; border-radius:8px; display:flex; align-items:center; justify-content:center; color:white;">📊</div>
-        InsightReviewer
-    </div>
-    <div style="display:flex; gap:2rem; margin-left:auto;">
-        <span style="color:#4f46e5; font-weight:500; border-bottom:2px solid #4f46e5; padding:0.5rem 0;">Dashboard</span>
-        <span style="color:#64748b; font-weight:500; padding:0.5rem 0;">Reports</span>
-        <span style="color:#64748b; font-weight:500; padding:0.5rem 0;">Settings</span>
-    </div>
-    <div style="display:flex; gap:1rem; margin-left:auto;">
-        <span style="width:36px; height:36px; border-radius:50%; background:#f1f5f9; display:flex; align-items:center; justify-content:center;">🔔</span>
-        <span style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
 # Header
-col1, col2 = st.columns([3, 1])
-with col1:
-    st.markdown("<h1 style='font-size:1.5rem; font-weight:700; color:#0f172a; margin:0;'>Weekly Product Insight Summary</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color:#64748b; font-size:0.875rem; margin-top:0.25rem;'>Analysis of negative reviews (1-2 stars) for the period Oct 24 - Oct 31.</p>", unsafe_allow_html=True)
-with col2:
-    st.button("🔄 Refresh Analysis", type="primary", use_container_width=True)
+st.markdown("<h1 style='font-size:1.5rem; font-weight:700; color:#0f172a; margin:0 0 0.25rem 0;'>Weekly Product Insight Summary</h1>", unsafe_allow_html=True)
+st.markdown("<p style='color:#64748b; font-size:0.875rem; margin:0 0 2rem 0;'>Analysis of negative reviews (1-2 stars) for the period Oct 24 - Oct 31.</p>", unsafe_allow_html=True)
 
-# Main content
+# Main content - two columns
 left, right = st.columns([2, 1])
 
 with left:
-    # Top 3 Themes
+    # Top 3 Themes Card
     themes = report.get('themes', [])[:3]
     cats = ['HIGH IMPACT', 'USABILITY', 'ONBOARDING']
     
     with st.container():
-        st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1rem;'>", unsafe_allow_html=True)
-        st.markdown("<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1rem;'><span style='font-size:1.2rem;'>🔥</span> Top 3 Themes</div>", unsafe_allow_html=True)
+        st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>" +
+                   "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
+                   "<span style='font-size:1.1rem;'>🔥</span> Top 3 Themes</div>", unsafe_allow_html=True)
         
         tcols = st.columns(3)
         for i, (theme, col) in enumerate(zip(themes, tcols)):
@@ -89,34 +58,37 @@ with left:
         
         st.markdown("</div>", unsafe_allow_html=True)
     
-    # Quotes
+    # Representative User Quotes Card
     quotes = report.get('quotes', [])[:3]
+    
     with st.container():
-        st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1rem;'>", unsafe_allow_html=True)
-        st.markdown("<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1rem;'><span style='font-size:1.2rem;'>💬</span> Representative User Quotes</div>", unsafe_allow_html=True)
+        st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>" +
+                   "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
+                   "<span style='font-size:1.1rem;'>💬</span> Representative User Quotes</div>", unsafe_allow_html=True)
         
         for i, quote in enumerate(quotes):
+            border = "1px solid #f1f5f9" if i < 2 else "none"
             st.markdown(f"""
-            <div style="display:flex; gap:1rem; padding:1rem 0; border-bottom:{'1px solid #f1f5f9' if i < 2 else 'none'};">
-                <div style="width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); flex-shrink:0;"></div>
-                <div style="flex:1;">
-                    <div style="color:#374151; font-size:0.9rem; line-height:1.6; margin-bottom:0.5rem;">"{quote['text']}"</div>
-                    <div style="font-size:0.75rem; color:#9ca3af;">— Verified User, {quote.get('rating', 1)} Star Review</div>
-                </div>
+            <div style="padding:1rem 0; border-bottom:{border};">
+                <div style="color:#374151; font-size:0.9rem; line-height:1.6; margin-bottom:0.5rem;">"{quote['text']}"</div>
+                <div style="font-size:0.75rem; color:#9ca3af;">— Verified User, {quote.get('rating', 1)} Star Review</div>
             </div>
             """, unsafe_allow_html=True)
         
         st.markdown("</div>", unsafe_allow_html=True)
     
-    # Actions
+    # Suggested Action Ideas Card
     actions = report.get('actions', [])[:3]
+    
     with st.container():
-        st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem;'>", unsafe_allow_html=True)
-        st.markdown("<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1rem;'><span style='font-size:1.2rem;'>💡</span> Suggested Action Ideas</div>", unsafe_allow_html=True)
+        st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem;'>" +
+                   "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
+                   "<span style='font-size:1.1rem;'>💡</span> Suggested Action Ideas</div>", unsafe_allow_html=True)
         
         for i, action in enumerate(actions):
+            border = "1px solid #f1f5f9" if i < 2 else "none"
             st.markdown(f"""
-            <div style="display:flex; gap:1rem; padding:1rem 0; border-bottom:{'1px solid #f1f5f9' if i < 2 else 'none'};">
+            <div style="display:flex; gap:1rem; padding:1rem 0; border-bottom:{border};">
                 <div style="width:28px; height:28px; background:#eff6ff; color:#4f46e5; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.85rem; flex-shrink:0;">{i+1}</div>
                 <div style="flex:1;">
                     <div style="font-weight:600; color:#0f172a; font-size:0.9rem; margin-bottom:0.25rem;">{action['title']}</div>
@@ -128,25 +100,27 @@ with left:
         st.markdown("</div>", unsafe_allow_html=True)
 
 with right:
-    # Send Report
+    # Send Report Card
     with st.container():
-        st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem;'>", unsafe_allow_html=True)
-        st.markdown("<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'><span>📧</span> Send Report</div>", unsafe_allow_html=True)
+        st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem;'>" +
+                   "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
+                   "<span>📧</span> Send Report</div>", unsafe_allow_html=True)
         
         with st.form("email"):
             st.text_input("Recipient Email", placeholder="product-team@company.com")
             st.text_input("Subject", value="Weekly Insight Summary - Negative Reviews")
             
-            st.markdown("""
+            # Generate key themes list from actual data
+            themes_list = "".join([f"<li>{t['name']}</li>" for t in themes])
+            
+            st.markdown(f"""
             <div style="background:#f8fafc; border-radius:8px; padding:1rem; margin:1rem 0; font-size:0.8rem; color:#64748b;">
                 <div style="font-weight:600; color:#0f172a; margin-bottom:0.75rem;">Preview Summary</div>
                 <div><strong>SUMMARY OVERVIEW</strong><br>
-                This week, we analyzed 514 negative reviews. The most critical themes relate to stability and performance.<br><br>
+                This week, we analyzed {report.get('total_reviews_analyzed', 667)} negative reviews. The most critical themes relate to stability and performance.<br><br>
                 <strong>KEY THEMES:</strong>
                 <ul style="margin:0.5rem 0; padding-left:1rem;">
-                    <li>Checkout Crashes (High Impact)</li>
-                    <li>Slow Media Loading</li>
-                    <li>Onboarding Friction</li>
+                    {themes_list}
                 </ul>
                 </div>
             </div>
