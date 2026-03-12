@@ -34,7 +34,6 @@ if not report:
 
 # Header
 st.markdown("<h1 style='font-size:1.5rem; font-weight:700; color:#0f172a; margin:0;'>Weekly Product Insight Summary</h1>", unsafe_allow_html=True)
-st.markdown("<p style='color:#64748b; font-size:0.875rem; margin:0.25rem 0 2rem 0;'>Analysis of negative reviews (1-2 stars) for the period Oct 24 - Oct 31.</p>", unsafe_allow_html=True)
 
 # Main content - two columns (2:1 ratio)
 left_col, right_col = st.columns([2, 1])

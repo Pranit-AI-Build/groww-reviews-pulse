@@ -112,7 +112,6 @@ def generate_email_content(report: dict) -> str:
             <!-- Header -->
             <div style="text-align: center; margin-bottom: 30px;">
                 <h1 style="color: #1f2937; font-size: 24px; font-weight: 600; margin: 0 0 8px 0;">Weekly Product Insight Summary</h1>
-                <p style="color: #6b7280; font-size: 14px; margin: 0;">Analysis of negative reviews (1-2 stars) for the period {report.get('week_range', 'Oct 24 - Oct 31')}</p>
             </div>
             
             <!-- Top 3 Summary Cards -->

@@ -56,9 +56,6 @@ function Dashboard() {
           <h1 style={{ fontSize: '1.75rem', fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>
             Weekly Product Insight Summary
           </h1>
-          <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>
-            Analysis of negative reviews (1-2 stars) for the period {report?.week_range || 'Oct 24 - Oct 31'}
-          </p>
         </div>
         <button
           onClick={loadData}
