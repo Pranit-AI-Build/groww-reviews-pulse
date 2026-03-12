@@ -24,18 +24,8 @@ ENV PYTHONUNBUFFERED=1
 # Expose port for web dashboard
 EXPOSE 8000
 
+# Create startup script
+RUN echo '#!/bin/bash\npython -m uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 &\npython scheduler.py\n' > /app/start.sh && chmod +x /app/start.sh
+
 # Command to run both web server and scheduler
-CMD ["python", "-c", "
-import subprocess
-import sys
-
-# Start web server in background
-web = subprocess.Popen([sys.executable, '-m', 'uvicorn', 'backend.app.main:app', '--host', '0.0.0.0', '--port', '8000'])
-
-# Start scheduler in foreground
-scheduler = subprocess.Popen([sys.executable, 'scheduler.py'])
-
-# Wait for both
-web.wait()
-scheduler.wait()
-"]
+CMD ["/app/start.sh"]
