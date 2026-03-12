@@ -40,12 +40,13 @@ def run_pipeline():
         normalizer = TextNormalizer()
         filter_processor = ReviewFilter()
         
-        processed = []
+        # Sanitize and normalize all reviews
         for review in reviews:
             review['text'] = sanitizer.sanitize(review['text'])
             review['text'] = normalizer.normalize(review['text'])
-            if filter_processor.is_english(review['text']):
-                processed.append(review)
+        
+        # Filter all reviews at once using the filter processor
+        processed = filter_processor.filter_reviews(reviews)
         print(f"   ✓ Processed {len(processed)} reviews")
         
         # Step 3: Analyze with Groq
