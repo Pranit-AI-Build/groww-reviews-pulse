@@ -104,8 +104,8 @@ with right_col:
                "<span>📧</span> Send Report</div>", unsafe_allow_html=True)
     
     with st.form("email"):
-        st.text_input("Recipient Email", placeholder="product-team@company.com")
-        st.text_input("Subject", value="Weekly Insight Summary - Negative Reviews")
+        to_email = st.text_input("Recipient Email", placeholder="product-team@company.com", key="email_to")
+        subject = st.text_input("Subject", value="Weekly Insight Summary - Negative Reviews", key="email_subject")
         
         # Generate key themes list from actual LLM data
         themes_list = "".join([f"<li>{t['name']} ({t.get('impact', 'High Impact')})</li>" for t in themes])
@@ -124,8 +124,30 @@ with right_col:
         </div>
         """, unsafe_allow_html=True)
         
-        if st.form_submit_button("📧 Send Email", use_container_width=True, type="primary"):
-            st.success("✅ Email sent!")
+        submitted = st.form_submit_button("📧 Send Email", use_container_width=True, type="primary")
+        if submitted:
+            try:
+                # Import email functions
+                sys.path.insert(0, str(Path(__file__).parent / "backend"))
+                from app.core.config import get_settings
+                from app.api.email import send_email_via_smtp, generate_email_content
+                
+                settings = get_settings()
+                email_body = generate_email_content(report)
+                
+                # Use form values
+                to_email_value = to_email if to_email else 'product-team@company.com'
+                subject_value = subject if subject else 'Weekly Insight Summary'
+                
+                send_email_via_smtp(
+                    to_email=to_email_value,
+                    subject=subject_value,
+                    html_body=email_body,
+                    settings=settings
+                )
+                st.success("✅ Email sent successfully!")
+            except Exception as e:
+                st.error(f"❌ Failed to send email: {str(e)}")
     
     st.markdown("<div style='font-size:0.7rem; color:#9ca3af; text-align:center; margin-top:1rem;'>This report will be sent as a PDF attachment with a formatted HTML body.</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
