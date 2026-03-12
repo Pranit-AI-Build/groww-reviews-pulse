@@ -4,7 +4,7 @@ import schedule
 import time
 import sys
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 # Add phase directories to path
@@ -76,7 +76,6 @@ def run_pipeline():
         actions = action_generator.generate(themes, quotes)
         
         # Calculate date range for the report
-        from datetime import timedelta
         end_date = datetime.now().strftime("%Y-%m-%d")
         start_date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
         
