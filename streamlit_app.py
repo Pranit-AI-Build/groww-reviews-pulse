@@ -44,18 +44,21 @@ with left_col:
     themes = report.get('themes', [])[:3]
     cats = ['HIGH IMPACT', 'USABILITY', 'ONBOARDING']
     
-    st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>" +
-               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
-               "<span style='font-size:1.1rem;'>🔥</span> Top 3 Themes</div>", unsafe_allow_html=True)
+    themes_html = "<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>"
+    themes_html += "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'><span style='font-size:1.1rem;'>🔥</span> Top 3 Themes</div>"
+    themes_html += "<div style='display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem;'>"
     
-    theme_cols = st.columns(3)
-    for i, (theme, col) in enumerate(zip(themes, theme_cols)):
-        with col:
-            st.markdown(f"<div style='font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#64748b; margin-bottom:0.5rem;'>{cats[i]}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div style='font-weight:600; color:#0f172a; margin-bottom:0.5rem; font-size:0.95rem;'>{theme['name']}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div style='font-size:0.8rem; color:#64748b; line-height:1.5;'>{theme['description']}</div>", unsafe_allow_html=True)
+    for i, theme in enumerate(themes):
+        themes_html += f"""
+        <div>
+            <div style='font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#64748b; margin-bottom:0.5rem;'>{cats[i]}</div>
+            <div style='font-weight:600; color:#0f172a; margin-bottom:0.5rem; font-size:0.95rem;'>{theme['name']}</div>
+            <div style='font-size:0.8rem; color:#64748b; line-height:1.5;'>{theme['description']}</div>
+        </div>
+        """
     
-    st.markdown("</div>", unsafe_allow_html=True)
+    themes_html += "</div></div>"
+    st.markdown(themes_html, unsafe_allow_html=True)
     
     # Representative User Quotes Card
     quotes = report.get('quotes', [])[:3]
