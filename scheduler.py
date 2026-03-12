@@ -80,14 +80,18 @@ def run_pipeline():
         settings = get_settings()
         email_body = generate_email_content(report)
         
+        # Get recipient from environment or use smtp_user as fallback
+        import os
+        recipient = os.getenv('RECIPIENT_EMAIL', settings.smtp_user)
+        
         # Send to configured email
         send_email_via_smtp(
-            to_email=settings.email_from,  # Send to yourself for testing
+            to_email=recipient,
             subject=f"Weekly Pulse - Groww Reviews ({datetime.now().strftime('%Y-%m-%d')})",
             html_body=email_body,
             settings=settings
         )
-        print(f"   ✓ Email sent to {settings.email_from}")
+        print(f"   ✓ Email sent to {recipient}")
         
         print(f"\n{'='*60}")
         print(f"Pipeline completed successfully at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
