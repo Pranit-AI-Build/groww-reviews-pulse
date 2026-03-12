@@ -1,73 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
-// Static data from the analysis
-const STATIC_REPORT = {
-  "period": "2024-01-01 to 2024-03-11",
-  "total_reviews_analyzed": 667,
-  "themes": [
-    {
-      "name": "App Crashes on Checkout",
-      "description": "Users reporting consistent crashes when moving from cart to payment screen",
-      "review_count": 89,
-      "impact": "HIGH"
-    },
-    {
-      "name": "Slow Image Loading",
-      "description": "Product images taking 5+ seconds to load on mobile data connections",
-      "review_count": 67,
-      "impact": "MEDIUM"
-    },
-    {
-      "name": "Confusing Login Flow",
-      "description": "OTP verification emails are delayed or never arrive for international users",
-      "review_count": 54,
-      "impact": "HIGH"
-    }
-  ],
-  "quotes": [
-    {
-      "text": "Extremely frustrated! Every time I try to buy something, the app just closes. I've tried reinstalling but nothing works. Lost a customer today.",
-      "theme": "App Crashes on Checkout",
-      "rating": 1
-    },
-    {
-      "text": "The app used to be fast, but now I can't even see what I'm buying because the pictures won't load. Please fix the performance issues!",
-      "theme": "Slow Image Loading",
-      "rating": 2
-    },
-    {
-      "text": "Waited 20 minutes for a verification code that never came. This is ridiculous for a modern app. Can't even get past the login screen.",
-      "theme": "Confusing Login Flow",
-      "rating": 1
-    }
-  ],
-  "actions": [
-    {
-      "title": "Implement Error Logging on Checkout",
-      "description": "Deploy Sentry or similar tool specifically for the checkout flow to capture the stack traces of the recurring crash.",
-      "priority": "HIGH",
-      "effort": "MEDIUM"
-    },
-    {
-      "title": "Optimize Image Assets & CDN",
-      "description": "Compress all product images and implement WebP format with a robust CDN to improve load times on slow connections.",
-      "priority": "MEDIUM",
-      "effort": "LOW"
-    },
-    {
-      "title": "Redesign Auth Fallback",
-      "description": "Introduce alternative login methods (Social login or Magic Links) to bypass the OTP delivery issues for international users.",
-      "priority": "HIGH",
-      "effort": "HIGH"
-    }
-  ]
-}
-
-const STATIC_STATS = {
-  total: 667,
-  rating_dist: { 1: 234, 2: 198, 3: 145, 4: 56, 5: 34 },
-  date_range: ["2024-01-01", "2024-03-11"]
-}
+import { reviewsApi, reportsApi } from '../api/client'
 
 function Dashboard() {
   const [stats, setStats] = useState(null)
@@ -81,11 +13,24 @@ function Dashboard() {
   const [sendResult, setSendResult] = useState(null)
 
   useEffect(() => {
-    // Load static data instead of API
-    setStats(STATIC_STATS)
-    setReport(STATIC_REPORT)
-    setLoading(false)
+    loadData()
   }, [])
+
+  const loadData = async () => {
+    try {
+      setLoading(true)
+      const [statsRes, reportRes] = await Promise.all([
+        reviewsApi.getStats(),
+        reportsApi.getLatest(),
+      ])
+      setStats(statsRes.data)
+      setReport(reportRes.data)
+    } catch (err) {
+      console.error('Failed to load data:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSendEmail = async (e) => {
     e.preventDefault()
@@ -152,22 +97,19 @@ function Dashboard() {
             </div>
           </section>
 
-          {/* User Quotes */}
+          {/* User Quotes & Actions */}
           <section style={{ backgroundColor: 'white', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
               <span style={{ color: '#6366f1', fontSize: '1.25rem' }}>❝</span>
               <h2 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1f2937' }}>Representative User Quotes</h2>
             </div>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
               {report?.quotes?.map((quote, i) => (
                 <QuoteCard key={i} quote={quote} index={i} />
               ))}
             </div>
-          </section>
 
-          {/* Action Ideas */}
-          <section style={{ backgroundColor: 'white', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
               <span style={{ color: '#10b981', fontSize: '1.25rem' }}>💡</span>
               <h2 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1f2937' }}>Suggested Action Ideas</h2>

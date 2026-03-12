@@ -45,7 +45,7 @@ with left_col:
     cats = ['HIGH IMPACT', 'USABILITY', 'ONBOARDING']
     
     themes_html = "<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>"
-    themes_html += "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'><span style='font-size:1.1rem;'>🔥</span> Top 3 Themes</div>"
+    themes_html += "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#6366f1; margin-bottom:1.5rem;'><span style='font-size:1.1rem;'>🔥</span> Top 3 Themes</div>"
     themes_html += "<div style='display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem;'>"
     
     for i, theme in enumerate(themes):
@@ -58,12 +58,16 @@ with left_col:
     themes_html += "</div></div>"
     st.markdown(themes_html, unsafe_allow_html=True)
     
-    # Representative User Quotes Card
+    # Representative User Quotes & Suggested Action Ideas Card
     quotes = report.get('quotes', [])[:3]
+    actions = report.get('actions', [])[:3]
     
-    st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>" +
-               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
-               "<span style='font-size:1.1rem;'>💬</span> Representative User Quotes</div>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>
+        <div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#6366f1; margin-bottom:1.5rem;'>
+            <span style='font-size:1.1rem;'>💬</span> Representative User Quotes
+        </div>
+    """, unsafe_allow_html=True)
     
     for i, quote in enumerate(quotes):
         border = "1px solid #f1f5f9" if i < 2 else "none"
@@ -74,14 +78,11 @@ with left_col:
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown("</div>", unsafe_allow_html=True)
-    
-    # Suggested Action Ideas Card
-    actions = report.get('actions', [])[:3]
-    
-    st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem;'>" +
-               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
-               "<span style='font-size:1.1rem;'>💡</span> Suggested Action Ideas</div>", unsafe_allow_html=True)
+    st.markdown("""
+        <div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#6366f1; margin:2rem 0 1.5rem 0; padding-top:1.5rem; border-top:2px solid #e2e8f0;'>
+            <span style='font-size:1.1rem;'>💡</span> Suggested Action Ideas
+        </div>
+    """, unsafe_allow_html=True)
     
     for i, action in enumerate(actions):
         border = "1px solid #f1f5f9" if i < 2 else "none"
@@ -100,7 +101,7 @@ with left_col:
 with right_col:
     # Send Report Card
     st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem;'>" +
-               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
+               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#6366f1; margin-bottom:1.5rem;'>" +
                "<span>📧</span> Send Report</div>", unsafe_allow_html=True)
     
     with st.form("email"):
