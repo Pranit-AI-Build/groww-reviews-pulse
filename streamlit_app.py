@@ -49,13 +49,11 @@ with left_col:
     themes_html += "<div style='display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem;'>"
     
     for i, theme in enumerate(themes):
-        themes_html += f"""
-        <div>
-            <div style='font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#64748b; margin-bottom:0.5rem;'>{cats[i]}</div>
-            <div style='font-weight:600; color:#0f172a; margin-bottom:0.5rem; font-size:0.95rem;'>{theme['name']}</div>
-            <div style='font-size:0.8rem; color:#64748b; line-height:1.5;'>{theme['description']}</div>
-        </div>
-        """
+        themes_html += "<div>"
+        themes_html += f"<div style='font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#64748b; margin-bottom:0.5rem;'>{cats[i]}</div>"
+        themes_html += f"<div style='font-weight:600; color:#0f172a; margin-bottom:0.5rem; font-size:0.95rem;'>{theme['name']}</div>"
+        themes_html += f"<div style='font-size:0.8rem; color:#64748b; line-height:1.5;'>{theme['description']}</div>"
+        themes_html += "</div>"
     
     themes_html += "</div></div>"
     st.markdown(themes_html, unsafe_allow_html=True)
