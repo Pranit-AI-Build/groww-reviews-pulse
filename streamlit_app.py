@@ -126,6 +126,22 @@ with right_col:
         """, unsafe_allow_html=True)
         
         submitted = st.form_submit_button("📧 Send Email", use_container_width=True, type="primary")
+        
+        # Custom CSS to make button purple
+        st.markdown("""
+        <style>
+            .stButton > button[kind="primary"] {
+                background-color: #6366f1 !important;
+                color: white !important;
+                border: none !important;
+                font-weight: 500 !important;
+            }
+            .stButton > button[kind="primary"]:hover {
+                background-color: #4f46e5 !important;
+                color: white !important;
+            }
+        </style>
+        """, unsafe_allow_html=True)
         if submitted:
             try:
                 # Import email functions
