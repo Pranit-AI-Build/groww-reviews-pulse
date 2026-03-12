@@ -98,7 +98,7 @@ function Dashboard() {
           <section style={{ backgroundColor: 'white', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
             {/* Quotes Section */}
             <div style={{ marginBottom: '2rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
                 <span style={{ color: '#6366f1', fontSize: '1.25rem' }}>❝</span>
                 <h2 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1f2937' }}>Representative User Quotes</h2>
               </div>
@@ -106,14 +106,14 @@ function Dashboard() {
               {/* Single Box for All Quotes */}
               <div style={{
                 backgroundColor: '#f9fafb',
-                borderRadius: '12px',
-                padding: '1.5rem',
+                borderRadius: '8px',
+                padding: '1.25rem',
                 border: '1px solid #e5e7eb'
               }}>
                 {report?.quotes?.map((quote, i) => (
                   <div key={i} style={{
-                    paddingBottom: i < report.quotes.length - 1 ? '1.25rem' : '0',
-                    marginBottom: i < report.quotes.length - 1 ? '1.25rem' : '0',
+                    paddingBottom: i < report.quotes.length - 1 ? '1rem' : '0',
+                    marginBottom: i < report.quotes.length - 1 ? '1rem' : '0',
                     borderBottom: i < report.quotes.length - 1 ? '1px solid #e5e7eb' : 'none'
                   }}>
                     <p style={{ 
