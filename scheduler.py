@@ -51,6 +51,8 @@ def run_pipeline():
         
         # Step 3: Analyze with Groq
         print("\n🤖 Step 3: Analyzing with Groq LLM...")
+        from phase3.src.config.settings import get_settings
+        from phase3.src.analyzers.groq_client import GroqClient
         from phase3.src.analyzers.theme_analyzer import ThemeAnalyzer
         from phase3.src.analyzers.quote_extractor import QuoteExtractor
         from phase3.src.analyzers.action_generator import ActionGenerator
@@ -59,16 +61,32 @@ def run_pipeline():
         import os
         os.chdir(Path(__file__).parent / "phase3")
         
-        theme_analyzer = ThemeAnalyzer()
-        quote_extractor = QuoteExtractor()
-        action_generator = ActionGenerator()
-        report_generator = PulseReportGenerator()
+        # Initialize Groq client
+        settings = get_settings()
+        groq_client = GroqClient(api_key=settings.groq_api_key)
+        
+        # Initialize analyzers with Groq client
+        theme_analyzer = ThemeAnalyzer(groq_client=groq_client, max_themes=settings.max_themes)
+        quote_extractor = QuoteExtractor(groq_client=groq_client, max_quotes=settings.max_quotes)
+        action_generator = ActionGenerator(groq_client=groq_client, max_actions=settings.max_actions)
+        report_generator = PulseReportGenerator(output_dir=settings.output_dir)
         
         themes = theme_analyzer.analyze(processed)
         quotes = quote_extractor.extract(processed, themes)
-        actions = action_generator.generate(themes)
+        actions = action_generator.generate(themes, quotes)
         
-        report = report_generator.generate(themes, quotes, actions, len(processed))
+        # Calculate date range for the report
+        from datetime import datetime, timedelta
+        end_date = datetime.now().strftime("%Y-%m-%d")
+        start_date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
+        
+        report = report_generator.generate(
+            themes=themes, 
+            quotes=quotes, 
+            actions=actions, 
+            review_count=len(processed),
+            date_range=(start_date, end_date)
+        )
         print(f"   ✓ Generated report with {len(themes)} themes, {len(quotes)} quotes, {len(actions)} actions")
         
         # Step 4: Send email
