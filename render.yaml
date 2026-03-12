@@ -4,8 +4,8 @@ services:
     name: groww-reviews-dashboard
     runtime: python
     plan: standard
-    buildCommand: "pip install -r backend/requirements.txt && pip install schedule"
-    startCommand: "bash start.sh"
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port 8000
     envVars:
       - key: GROQ_API_KEY
         sync: false
@@ -22,7 +22,7 @@ services:
       - key: EMAIL_FROM
         sync: false
       - key: PYTHONPATH
-        value: /opt/render/project/src
+        value: /opt/render/project/src/backend
     disk:
       name: data
       mountPath: /opt/render/project/src/data
