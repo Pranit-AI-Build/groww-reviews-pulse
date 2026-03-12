@@ -1,4 +1,4 @@
-"""Streamlit Dashboard - Card Sections with Headers Inside."""
+"""Streamlit Dashboard - Exact Match to Reference."""
 
 import streamlit as st
 import json
@@ -15,7 +15,7 @@ st.markdown("""
 <style>
     .main { background-color: #f8fafc; }
     #MainMenu, footer, header { visibility: hidden; }
-    .block-container { padding: 2rem !important; }
+    .block-container { padding: 2rem !important; max-width: 1200px !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -33,23 +33,23 @@ if not report:
     st.stop()
 
 # Header
-st.markdown("<h1 style='font-size:1.5rem; font-weight:700; color:#0f172a; margin:0 0 0.25rem 0;'>Weekly Product Insight Summary</h1>", unsafe_allow_html=True)
-st.markdown("<p style='color:#64748b; font-size:0.875rem; margin:0 0 2rem 0;'>Analysis of negative reviews (1-2 stars) for the period Oct 24 - Oct 31.</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='font-size:1.5rem; font-weight:700; color:#0f172a; margin:0;'>Weekly Product Insight Summary</h1>", unsafe_allow_html=True)
+st.markdown("<p style='color:#64748b; font-size:0.875rem; margin:0.25rem 0 2rem 0;'>Analysis of negative reviews (1-2 stars) for the period Oct 24 - Oct 31.</p>", unsafe_allow_html=True)
 
-# Main content - two columns
-left, right = st.columns([2, 1])
+# Main content - two columns (2:1 ratio)
+left_col, right_col = st.columns([2, 1])
 
-with left:
-    # Top 3 Themes Card - Title inside card
+with left_col:
+    # Top 3 Themes Card
     themes = report.get('themes', [])[:3]
     cats = ['HIGH IMPACT', 'USABILITY', 'ONBOARDING']
     
     st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>" +
-               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem; font-size:1.1rem;'>" +
-               "<span>🔥</span> Top 3 Themes</div>", unsafe_allow_html=True)
+               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
+               "<span style='font-size:1.1rem;'>🔥</span> Top 3 Themes</div>", unsafe_allow_html=True)
     
-    tcols = st.columns(3)
-    for i, (theme, col) in enumerate(zip(themes, tcols)):
+    theme_cols = st.columns(3)
+    for i, (theme, col) in enumerate(zip(themes, theme_cols)):
         with col:
             st.markdown(f"<div style='font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#64748b; margin-bottom:0.5rem;'>{cats[i]}</div>", unsafe_allow_html=True)
             st.markdown(f"<div style='font-weight:600; color:#0f172a; margin-bottom:0.5rem; font-size:0.95rem;'>{theme['name']}</div>", unsafe_allow_html=True)
@@ -57,12 +57,12 @@ with left:
     
     st.markdown("</div>", unsafe_allow_html=True)
     
-    # Representative User Quotes Card - Title inside card
+    # Representative User Quotes Card
     quotes = report.get('quotes', [])[:3]
     
     st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem; margin-bottom:1.5rem;'>" +
-               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem; font-size:1.1rem;'>" +
-               "<span>💬</span> Representative User Quotes</div>", unsafe_allow_html=True)
+               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
+               "<span style='font-size:1.1rem;'>💬</span> Representative User Quotes</div>", unsafe_allow_html=True)
     
     for i, quote in enumerate(quotes):
         border = "1px solid #f1f5f9" if i < 2 else "none"
@@ -75,12 +75,12 @@ with left:
     
     st.markdown("</div>", unsafe_allow_html=True)
     
-    # Suggested Action Ideas Card - Title inside card
+    # Suggested Action Ideas Card
     actions = report.get('actions', [])[:3]
     
     st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem;'>" +
-               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem; font-size:1.1rem;'>" +
-               "<span>💡</span> Suggested Action Ideas</div>", unsafe_allow_html=True)
+               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
+               "<span style='font-size:1.1rem;'>💡</span> Suggested Action Ideas</div>", unsafe_allow_html=True)
     
     for i, action in enumerate(actions):
         border = "1px solid #f1f5f9" if i < 2 else "none"
@@ -96,24 +96,25 @@ with left:
     
     st.markdown("</div>", unsafe_allow_html=True)
 
-with right:
-    # Send Report Card - Title inside card
+with right_col:
+    # Send Report Card
     st.markdown("<div style='background:white; border-radius:12px; border:1px solid #e2e8f0; padding:1.5rem;'>" +
-               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem; font-size:1.1rem;'>" +
+               "<div style='display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;'>" +
                "<span>📧</span> Send Report</div>", unsafe_allow_html=True)
     
     with st.form("email"):
         st.text_input("Recipient Email", placeholder="product-team@company.com")
         st.text_input("Subject", value="Weekly Insight Summary - Negative Reviews")
         
-        # Generate key themes list from actual data
-        themes_list = "".join([f"<li>{t['name']}</li>" for t in themes])
+        # Generate key themes list from actual LLM data
+        themes_list = "".join([f"<li>{t['name']} ({t.get('impact', 'High Impact')})</li>" for t in themes])
+        total_reviews = report.get('total_reviews_analyzed', 667)
         
         st.markdown(f"""
         <div style="background:#f8fafc; border-radius:8px; padding:1rem; margin:1rem 0; font-size:0.8rem; color:#64748b;">
             <div style="font-weight:600; color:#0f172a; margin-bottom:0.75rem;">Preview Summary</div>
             <div><strong>SUMMARY OVERVIEW</strong><br>
-            This week, we analyzed {report.get('total_reviews_analyzed', 667)} negative reviews. The most critical themes relate to stability and performance.<br><br>
+            This week, we analyzed {total_reviews} negative reviews. The most critical themes relate to stability and performance.<br><br>
             <strong>KEY THEMES:</strong>
             <ul style="margin:0.5rem 0; padding-left:1rem;">
                 {themes_list}
