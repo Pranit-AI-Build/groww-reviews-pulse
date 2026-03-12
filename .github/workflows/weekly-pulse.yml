@@ -1,0 +1,37 @@
+name: Weekly Pulse Report
+
+on:
+  schedule:
+    # Runs every Monday at 9:00 AM IST (3:30 AM UTC)
+    - cron: '30 3 * * 1'
+    # Also runs at 5 PM IST (11:30 AM UTC) and 9 PM IST (3:30 PM UTC) for testing
+    - cron: '30 11 * * *'
+    - cron: '30 15 * * *'
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  run-weekly-pulse:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        
+    - name: Run Weekly Pulse Pipeline
+      env:
+        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        SMTP_USER: ${{ secrets.SMTP_USER }}
+        SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+        SMTP_HOST: ${{ secrets.SMTP_HOST }}
+        SMTP_PORT: ${{ secrets.SMTP_PORT }}
+        RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+      run: python scheduler.py

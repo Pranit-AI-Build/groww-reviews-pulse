@@ -99,22 +99,15 @@ def run_pipeline():
         traceback.print_exc()
 
 def main():
-    """Main scheduler loop."""
+    """Main entry point - runs pipeline once (for GitHub Actions)."""
     print("\n" + "="*60)
     print("Groww Reviews Weekly Pulse Scheduler")
     print("="*60)
     print(f"Current time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print("\nScheduled runs (Weekly on Monday):")
-    print("  • Every Monday at 9:00 AM")
-    print("\nPress Ctrl+C to stop\n")
+    print("Running pipeline once...\n")
     
-    # Schedule for weekly run on Monday at 9 AM
-    schedule.every().monday.at("09:00").do(run_pipeline)
-    
-    # Keep running
-    while True:
-        schedule.run_pending()
-        time.sleep(60)  # Check every minute
+    # Run pipeline immediately (GitHub Actions handles the scheduling)
+    run_pipeline()
 
 if __name__ == "__main__":
     main()
