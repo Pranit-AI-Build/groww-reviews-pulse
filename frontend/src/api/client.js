@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const API_BASE_URL = '/api'
+// Streamlit Cloud backend URL
+const API_BASE_URL = 'https://groww-reviews-pulse-ejz7vvesnkrmpkms6ridug.streamlit.app/api'
 
 const client = axios.create({
   baseURL: API_BASE_URL,
