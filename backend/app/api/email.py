@@ -83,7 +83,7 @@ def generate_reviews_csv(settings) -> str:
     writer = csv.writer(output)
     
     # Write header
-    writer.writerow(['Review ID', 'Rating', 'Title', 'Text', 'Date', 'Version', 'Source'])
+    writer.writerow(['Review ID', 'Text', 'Date', 'Version', 'Source'])
     
     try:
         # Try to connect to reviews database
@@ -94,7 +94,7 @@ def generate_reviews_csv(settings) -> str:
             
             # Get recent reviews (last 100)
             cursor.execute('''
-                SELECT id, rating, title, text, review_date, app_version, source
+                SELECT id, text, review_date, app_version, source
                 FROM reviews
                 ORDER BY review_date DESC
                 LIMIT 100
