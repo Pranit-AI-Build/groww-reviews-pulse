@@ -87,7 +87,7 @@ def generate_reviews_csv(settings) -> str:
     
     try:
         # Try to connect to reviews database
-        db_path = settings.data_dir / 'reviews.db'
+        db_path = settings.data_dir / 'processed_reviews.db'
         if db_path.exists():
             conn = sqlite3.connect(str(db_path))
             cursor = conn.cursor()
@@ -100,11 +100,16 @@ def generate_reviews_csv(settings) -> str:
                 LIMIT 100
             ''')
             
-            for row in cursor.fetchall():
+            rows = cursor.fetchall()
+            for row in rows:
                 writer.writerow(row)
             
             conn.close()
+            print(f"CSV generated with {len(rows)} reviews")
+        else:
+            print(f"Database not found at {db_path}")
     except Exception as e:
+        print(f"Error generating CSV: {str(e)}")
         # If DB not available, use sample data from report
         writer.writerow(['Sample Review Data'])
         writer.writerow(['Rating', 'Theme', 'Quote'])
