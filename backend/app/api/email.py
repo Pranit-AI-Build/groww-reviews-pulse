@@ -174,21 +174,16 @@ def generate_email_content(report: dict) -> str:
                         <span style="color: #6366f1;">❝</span>
                         <h2 style="color: #1f2937; font-size: 14px; font-weight: 600; margin: 0;">User Quotes</h2>
                     </div>
-                    <!-- Single Box for All Quotes -->
-                    <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; border: 1px solid #e5e7eb;">
     """
-        
-    for i, quote in enumerate(quotes[:3]):
-        is_last = i == len(quotes[:3]) - 1
+    
+    for quote in quotes[:3]:
         html += f"""
-                    <div style="padding-bottom:{'16px' if not is_last else '0'}; margin-bottom:{'16px' if not is_last else '0'}; border-bottom:{'1px solid #e5e7eb' if not is_last else 'none'};">
-                        <p style="color: #4b5563; font-size: 13px; line-height: 1.6; margin: 0 0 8px 0; font-style: italic;">\"{quote.get('text', '')}\"</p>
-                        <p style="color: #9ca3af; font-size: 11px; margin: 0;">— Verified User, {quote.get('rating', 1)} Star Review</p>
+                    <div style="border-left: 3px solid #6366f1; padding-left: 12px; margin-bottom: 16px;">
+                        <p style="color: #4b5563; font-size: 13px; line-height: 1.6; margin: 0 0 8px 0; font-style: italic;">"{quote.get('text', '')}"</p>
                     </div>
         """
-        
+    
     html += """
-                    </div>
                 </div>
     """
     

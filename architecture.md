@@ -118,7 +118,7 @@ Generates 3 actionable recommendations based on themes and sentiment analysis.
 **Component:** `PulseReportGenerator`
 
 **Output Format:**
-```markdown
+```
 # Weekly Pulse - Week of [Date]
 
 ## Top 3 Themes
@@ -174,7 +174,7 @@ GET  /api/stats            - Get review statistics
 - Mailgun API
 
 ### 5.2 Frontend Dashboard
-**Technology:** React + Vite
+**Technology:** Streamlit
 
 **Components:**
 - `Dashboard` - Overview of reviews and stats
@@ -190,12 +190,9 @@ GET  /api/stats            - Get review statistics
 - Trigger on-demand analysis
 - View analysis history
 
-**Pages:**
-- `/` - Dashboard (stats + latest report)
-- `/reports` - List all reports
-- `/reports/{id}` - View specific report
-- `/reviews` - Browse reviews
-- `/settings` - Configure email settings
+**Deployment:** Streamlit Cloud
+
+**Main File:** `streamlit_app.py`
 
 ---
 
@@ -267,8 +264,8 @@ GET  /api/stats            - Get review statistics
 | Config | pydantic-settings |
 | Logging | structlog |
 | **Backend** | **FastAPI** |
-| **Frontend** | **React + Vite** |
-| **UI Components** | **Tailwind CSS** |
+| **Frontend** | **Streamlit** |
+| **UI Styling** | **Custom CSS** |
 
 ---
 
@@ -299,14 +296,8 @@ groww-reviews-pulse/
 │   │   └── main.py
 │   ├── requirements.txt
 │   └── Dockerfile
-├── frontend/                # NEW: React Frontend
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── api/
-│   │   └── App.jsx
-│   ├── package.json
-│   └── vite.config.js
+├── streamlit_app.py         # NEW: Streamlit Frontend
+├── .streamlit/              # Streamlit configuration
 ├── data/
 │   └── reviews.db           # SQLite database
 ├── outputs/
