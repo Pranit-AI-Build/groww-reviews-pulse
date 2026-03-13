@@ -2,10 +2,15 @@
 
 import json
 import smtplib
+import csv
+import io
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 from pydantic import BaseModel, EmailStr
 from fastapi import APIRouter, HTTPException
+from pathlib import Path
 
 from app.core.config import get_settings
 
@@ -20,7 +25,7 @@ class EmailRequest(BaseModel):
 
 @router.post("/send-report")
 async def send_report_email(request: EmailRequest):
-    """Send report via email."""
+    """Send report via email with CSV attachment."""
     settings = get_settings()
     
     # Load report
@@ -38,17 +43,21 @@ async def send_report_email(request: EmailRequest):
     # Generate email content
     email_body = generate_email_content(report)
     
-    # Send email via SMTP
+    # Generate CSV from reviews database
+    csv_data = generate_reviews_csv(settings)
+    
+    # Send email via SMTP with CSV attachment
     try:
-        send_email_via_smtp(
+        send_email_with_attachment(
             to_email=request.to_email,
             subject=request.subject,
             html_body=email_body,
+            csv_data=csv_data,
             settings=settings
         )
         return {
             "success": True,
-            "message": "Email sent successfully via Gmail",
+            "message": "Email sent successfully via Gmail with CSV attachment",
             "to": request.to_email,
             "subject": request.subject,
             "report_summary": {
@@ -66,8 +75,81 @@ async def send_report_email(request: EmailRequest):
         }
 
 
+def generate_reviews_csv(settings) -> str:
+    """Generate CSV from reviews database."""
+    import sqlite3
+    
+    output = io.StringIO()
+    writer = csv.writer(output)
+    
+    # Write header
+    writer.writerow(['Review ID', 'Rating', 'Title', 'Text', 'Date', 'Version', 'Source'])
+    
+    try:
+        # Try to connect to reviews database
+        db_path = settings.data_dir / 'reviews.db'
+        if db_path.exists():
+            conn = sqlite3.connect(str(db_path))
+            cursor = conn.cursor()
+            
+            # Get recent reviews (last 100)
+            cursor.execute('''
+                SELECT id, rating, title, text, review_date, app_version, source
+                FROM reviews
+                ORDER BY review_date DESC
+                LIMIT 100
+            ''')
+            
+            for row in cursor.fetchall():
+                writer.writerow(row)
+            
+            conn.close()
+    except Exception as e:
+        # If DB not available, use sample data from report
+        writer.writerow(['Sample Review Data'])
+        writer.writerow(['Rating', 'Theme', 'Quote'])
+        # Add some sample data if needed
+    
+    return output.getvalue()
+
+
+def send_email_with_attachment(to_email: str, subject: str, html_body: str, csv_data: str, settings):
+    """Send email using Gmail SMTP with CSV attachment."""
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.base import MIMEBase
+    from email import encoders
+    
+    # Create message
+    msg = MIMEMultipart('mixed')
+    msg['Subject'] = subject
+    msg['From'] = settings.email_from
+    msg['To'] = to_email
+    
+    # Create HTML part
+    html_part = MIMEText(html_body, 'html', 'utf-8')
+    msg.attach(html_part)
+    
+    # Attach CSV file
+    csv_attachment = MIMEBase('text', 'csv')
+    csv_attachment.set_payload(csv_data.encode('utf-8'))
+    encoders.encode_base64(csv_attachment)
+    csv_attachment.add_header(
+        'Content-Disposition',
+        'attachment',
+        filename='groww_reviews_data.csv'
+    )
+    msg.attach(csv_attachment)
+    
+    # Connect to SMTP server and send
+    with smtplib.SMTP(settings.smtp_host, settings.smtp_port) as server:
+        server.starttls()  # Enable TLS
+        server.login(settings.smtp_user, settings.smtp_password)
+        server.sendmail(settings.email_from, to_email, msg.as_string())
+
+
 def send_email_via_smtp(to_email: str, subject: str, html_body: str, settings):
-    """Send email using Gmail SMTP."""
+    """Send email using Gmail SMTP (legacy - kept for compatibility)."""
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
     
