@@ -110,12 +110,12 @@ def generate_email_content(report: dict) -> str:
         <div style="max-width: 900px; margin: 0 auto;">
             
             <!-- Header -->
-            <div style="text-align: center; margin-bottom: 30px;">
+            <div style="text-align: center; margin-bottom: 20px;">
                 <h1 style="color: #1f2937; font-size: 24px; font-weight: 600; margin: 0 0 8px 0;">Weekly Product Insight Summary</h1>
             </div>
             
             <!-- Top 3 Summary Cards -->
-            <div style="display: table; width: 100%; margin-bottom: 24px; border-spacing: 16px 0; margin-left: -16px; margin-right: -16px;">
+            <div style="display: table; width: 100%; margin-bottom: 16px; border-spacing: 16px 0; margin-left: -16px; margin-right: -16px;">
     """
     
     # Top 3 summary cards
