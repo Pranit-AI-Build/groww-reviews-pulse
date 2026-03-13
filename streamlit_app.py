@@ -50,6 +50,19 @@ div[data-testid="stButton"] > button[kind="primary"]:hover {
     background-color: #4f46e5 !important;
     color: white !important;
 }
+/* Hide 'Press Enter to submit form' text */
+div[data-testid="InputInstructions"] > span:first-child {
+    display: none !important;
+}
+div[data-testid="stFormSubmitButton"] > div > p {
+    display: none !important;
+}
+.st-emotion-cache-1bmb2n1 {
+    display: none !important;
+}
+[data-testid="InputInstructions"] {
+    display: none !important;
+}
 </style>""", unsafe_allow_html=True)
 
 
