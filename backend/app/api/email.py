@@ -108,12 +108,14 @@ def generate_reviews_csv(settings) -> str:
             print(f"CSV generated with {len(rows)} reviews")
         else:
             print(f"Database not found at {db_path}")
+            writer.writerow(['Database not found at:', str(db_path)])
     except Exception as e:
+        import traceback
+        err = traceback.format_exc()
         print(f"Error generating CSV: {str(e)}")
         # If DB not available, use sample data from report
-        writer.writerow(['Sample Review Data'])
-        writer.writerow(['Rating', 'Theme', 'Quote'])
-        # Add some sample data if needed
+        writer.writerow(['Error generating CSV!', str(db_path)])
+        writer.writerow([err])
     
     return output.getvalue()
 
@@ -136,9 +138,7 @@ def send_email_with_attachment(to_email: str, subject: str, html_body: str, csv_
     msg.attach(html_part)
     
     # Attach CSV file
-    csv_attachment = MIMEBase('text', 'csv')
-    csv_attachment.set_payload(csv_data.encode('utf-8'))
-    encoders.encode_base64(csv_attachment)
+    csv_attachment = MIMEText(csv_data, 'csv', 'utf-8')
     csv_attachment.add_header(
         'Content-Disposition',
         'attachment',

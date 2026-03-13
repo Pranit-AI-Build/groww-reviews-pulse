@@ -219,7 +219,11 @@ with right_col:
 
                 # Load settings from the backend .env (not the project root)
                 env_path = backend_dir / ".env"
-                settings = Settings(_env_file=str(env_path))
+                settings = Settings(
+                    _env_file=str(env_path),
+                    data_dir=Path(__file__).parent / "phase2" / "data",
+                    reports_dir=Path(__file__).parent / "phase3" / "outputs"
+                )
                 email_body = generate_email_content(report)
                 csv_data = generate_reviews_csv(settings)
                 to_email_value = to_email if to_email else 'product-team@company.com'
