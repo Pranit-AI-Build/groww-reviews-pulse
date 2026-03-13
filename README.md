@@ -1,117 +1,89 @@
 # Groww Reviews Weekly Pulse
 
-An automated system that analyzes Play Store reviews for Groww app using Groq LLM and generates weekly pulse reports with themes, user quotes, and actionable insights.
+An automated dashboard and data pipeline that analyzes Play Store reviews for the Groww app using the Groq LLM. It generates weekly pulse reports with themes, user quotes, and actionable insights.
 
 ---
 
 ## How to Re-run for a New Week
 
-### Automatic Execution
-The system runs automatically every **Monday at 9:00 AM IST** via GitHub Actions scheduler.
+The data pipeline collects new reviews, processes them, analyzes them with the LLM, and updates the dashboard data.
 
-### Manual Execution
+### 1. Automatic Execution
+The system is designed to run automatically every **Monday at 9:00 AM IST** via a GitHub Actions scheduled workflow (`.github/workflows/weekly_pulse.yml`).
 
-If you need to manually trigger the analysis for a new week:
+### 2. Manual Execution via GitHub Actions (Recommended)
+If you need to manually trigger the analysis for a new week without waiting for Monday:
+1. Go to the repository's **Actions** tab on GitHub.
+2. Select the **"Weekly Pulse Report"** workflow on the left sidebar.
+3. Click the **"Run workflow"** button on the right.
+4. The workflow will execute all phases and commit the new `weekly_pulse.json` to the repo. Streamlit Cloud will automatically pick up the new data.
 
-#### Option 1: Via GitHub Actions (Recommended)
-1. Go to the repository's **Actions** tab
-2. Select **"Weekly Pulse Report"** workflow
-3. Click **"Run workflow"** button
-4. The workflow will execute all phases and generate the report
+### 3. Local Execution
+To run the entire pipeline locally on your machine and update the local database:
 
-#### Option 2: Local Execution
 ```bash
-# Navigate to project root
+# Navigate to the project root directory
 cd groww-reviews-pulse
 
-# Run Phase 1: Data Collection
-python phase1/main.py collect
-
-# Run Phase 2: Data Processing  
-python phase2/main.py process
-
-# Run Phase 3: LLM Analysis & Report Generation
-python phase3/main.py analyze --weeks 10
-
-# View output in:
-# - phase3/outputs/weekly_pulse.json
-# - phase3/outputs/weekly_pulse.md
-# - phase3/outputs/weekly_pulse.txt
+# Run the master scheduler script to execute the entire pipeline
+# (Collection -> Processing -> Analysis)
+python scheduler.py
 ```
 
-#### Option 3: Trigger Email Manually
-1. Open the Streamlit app on Streamlit Cloud
-2. Click **"↻ Refresh Analysis"** to load latest data
-3. Use the **"Send Report"** panel on the right
-4. Enter recipient email and click **"Send Report"**
+Once `scheduler.py` finishes, the new report data will be saved to `phase3/outputs/weekly_pulse.json`. If your Streamlit app is running locally, the new data will be available immediately.
 
 ---
 
 ## Theme Legend
 
-The system identifies common themes from user reviews. Here are the key theme categories:
+The LLM identifies common themes from the user reviews. Here are the key theme categories that power the dashboard:
 
 ### 🔥 Performance & Stability
-- **App Performance** - Speed, lag, crashes, freezing issues
-- **Technical Issues** - Bugs, errors, functionality problems
+- **App Performance** - Speed, lag, crashes, and freezing issues.
+- **Technical Issues** - Bugs, errors, and app functionality problems.
 
 ### ⚡ Features & Functionality  
-- **Withdrawal Issues** - Problems withdrawing funds or securities
-- **KYC Verification** - Know Your Customer onboarding challenges
-- **Payment Problems** - Payment failures, transaction issues
-- **External Funds** - Fetching holdings from other platforms
+- **Withdrawal Issues** - Problems withdrawing funds, money stuck.
+- **KYC Verification** - Onboarding and verification challenges.
+- **Payment Problems** - Payment failures, UPI issues, transaction errors.
+- **External Funds** - Fetching holdings from other platforms.
 
 ### 💡 User Experience
-- **UI/UX Design** - Interface usability, navigation concerns
-- **Customer Support** - Response time, support quality
-- **Account Management** - Login, profile, settings issues
+- **UI/UX Design** - Interface usability, navigation concerns, and layout.
+- **Customer Support** - Response time and support agent quality.
+- **Account Management** - Login, profile, and account settings issues.
 
 ### 📊 Trading & Investment
-- **Order Execution** - Buy/sell order placement and confirmation
-- **Brokerage Charges** - Fees, charges, pricing concerns
-- **Portfolio Management** - Holdings display, tracking issues
+- **Order Execution** - Buy/sell order placement, confirmation delays.
+- **Brokerage Charges** - Hidden fees, high charges, and pricing concerns.
+- **Portfolio Management** - Holdings display, P&L accuracy, and tracking.
 
-### Other Common Themes
-- **Onboarding** - New user registration and setup
-- **Notifications** - Alerts, updates, communication preferences
-- **Security** - Account safety, authentication concerns
-
----
-
-## Output Files
-
-After each run, the following files are generated:
-
-- `phase3/outputs/weekly_pulse.json` - Structured data (used by UI)
-- `phase3/outputs/weekly_pulse.md` - Markdown report
-- `phase3/outputs/weekly_pulse.txt` - Plain text summary
+### 📌 Other Common Themes
+- **Onboarding** - New user registration and setup friction.
+- **Notifications** - Missing alerts, delayed updates.
+- **Security** - Account safety and authentication concerns.
 
 ---
 
 ## Technology Stack
 
-- **Data Source**: Google Play Store Reviews
-- **LLM Provider**: Groq API (llama-3.3-70b-versatile)
+- **Data Source**: Google Play Store (`google-play-scraper`)
+- **LLM Provider**: Groq API (`llama-3.3-70b-versatile`)
 - **Automation**: GitHub Actions (weekly scheduler)
 - **Frontend**: Streamlit Cloud
-- **Email**: Gmail SMTP
-
----
+- **Email Delivery**: Standard SMTP
 
 ## Configuration
 
-Key environment variables (stored in `.env`):
+To run locally, you need a `.env` file in the `backend/` directory with the following variables:
 
 ```bash
-GROQ_API_KEY=your_api_key
-PLAYSTORE_APP_ID=com.nextbillion.groww
-WEEKS_TO_COLLECT=10
+# Required
+GROQ_API_KEY=your_groq_api_key
+
+# Optional Email Configuration (for the Send Report feature)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASSWORD=your_app_password
 ```
-
----
-
-## Support
-
-For issues or questions, please raise an issue on the GitHub repository.
