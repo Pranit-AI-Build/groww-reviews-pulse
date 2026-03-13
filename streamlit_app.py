@@ -72,18 +72,10 @@ total_reviews = report.get('total_reviews', 0)
 
 
 # ── Header ──
-header_left, header_right = st.columns([3, 1])
-with header_left:
-    st.markdown(
-        f"<h1 style='font-size:1.6rem; font-weight:700; color:#0f172a; margin:0 0 0.25rem 0;'>Weekly Product Insight Summary</h1>"
-        f"<p style='font-size:0.85rem; color:#64748b; margin:0;'>Analysis of negative reviews (1-2 stars) for the period {week_range}.</p>",
-        unsafe_allow_html=True
-    )
-with header_right:
-    st.markdown("<div style='height:0.5rem;'></div>", unsafe_allow_html=True)
-    if st.button("🔄 Refresh Analysis", type="primary", use_container_width=True):
-        st.cache_data.clear()
-        st.rerun()
+st.markdown(
+    "<h1 style='font-size:1.6rem; font-weight:700; color:#0f172a; margin:0 0 0.25rem 0;'>Weekly Product Insight Summary</h1>",
+    unsafe_allow_html=True
+)
 
 st.markdown("<div style='height:1rem;'></div>", unsafe_allow_html=True)
 
